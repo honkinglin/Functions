@@ -1,6 +1,8 @@
-# 记录平常工作中的小功能函数
+# 记录平常工作中的常用的小功能函数
 
-## 将跨域图片转成base64并下载功能
+> 有需要的同学可以自取 :relaxed:
+
+## 将跨域图片转成base64
 
 ```javascript
 function imgToBase64(url, type='image/png', quality=0.92) {
