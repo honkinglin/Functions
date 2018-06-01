@@ -45,3 +45,32 @@ function getCookie(key) {
     return unescape(document.cookie.substring(start, end));
 }
 ```
+
+## DOM操作类
+
+```javascript
+function addClass(el, clsName) {
+    if (!el.className.length) {
+        el.className = clsName;
+    } else if (el.className.indexOf(clsName) === -1) {
+        el.className += ` ${clsName}`;
+    }
+}
+
+function removeClass(el, clsName) {
+    const reg = new RegExp('(\\s+' + clsName + '| ^' + clsName + '\\s+)', 'g');
+    const singleClass = new RegExp('^' + clsName + '$', 'g');
+    el.className = singleClass.test(el.className) ? "" : el.className.replace(reg, '');
+}
+
+function hasClass(el, clsName) {
+    if (!el.className.length)
+        return false;
+
+    const clsArr = el.className.split(' ');
+    if (clsArr.includes(clsName))
+        return true;
+
+    return false;
+}
+```
