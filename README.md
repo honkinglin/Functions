@@ -39,7 +39,7 @@ function getCookie(key) {
     return unescape(document.cookie.substring(start, end));
 }
 
-function setCookie(key, value, days) {
+function setCookie(key, value, days) {
     const exdate = new Date();
     exdate.setDate(exdate.getDate() + days);
     document.cookie = `${key}=${escape(value)};expires=${exdate.toGMTString()}`;
@@ -114,7 +114,7 @@ function getHash(name) {
 }
 
 function getHomePage() {
-    const link = location.origin + location.pathname.replace(/\w+\.html/', '');
+    const link = location.origin + location.pathname.replace(/\w+\.html$/, '');
     const homePage = link.charAt(link.length - 1) == '/' ? link : link + '/';
 
     return homePage;
