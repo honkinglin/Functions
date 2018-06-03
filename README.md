@@ -27,12 +27,6 @@ function imgToBase64(url, type='image/png', quality=0.92) {
 ## cookie相关操作
 
 ```javascript
-function setCookie(key, value, days) {
-    const exdate = new Date();
-    exdate.setDate(exdate.getDate() + days);
-    document.cookie = `${key}=${escape(value)};expires=${exdate.toGMTString()}`;
-}
-
 function getCookie(key) {
     if (document.cookie.length === 0) return '';
     let start = document.cookie.indexOf(`${key}=`);
@@ -44,15 +38,25 @@ function getCookie(key) {
     }
     return unescape(document.cookie.substring(start, end));
 }
+
+function setCookie(key, value, days) {
+    const exdate = new Date();
+    exdate.setDate(exdate.getDate() + days);
+    document.cookie = `${key}=${escape(value)};expires=${exdate.toGMTString()}`;
+}
 ```
 
 ## DOM操作类
 
 ```javascript
+function hasClass(el, clsName) {
+    return (new RegExp("(^|\\s+)"+clsName+"(\\s+|$)",'i') ).test(el.className);
+}
+
 function addClass(el, clsName) {
     if (!el.className.length) {
         el.className = clsName;
-    } else if (el.className.indexOf(clsName) === -1) {
+    } else if (!el.className.split(' ').includes(clsName)) {
         el.className += ` ${clsName}`;
     }
 }
@@ -63,14 +67,56 @@ function removeClass(el, clsName) {
     el.className = singleClass.test(el.className) ? "" : el.className.replace(reg, '');
 }
 
-function hasClass(el, clsName) {
-    if (!el.className.length)
-        return false;
-
+function toggleClass(el, clsName) {
     const clsArr = el.className.split(' ');
-    if (clsArr.includes(clsName))
-        return true;
+    if (!clsArr.includes(clsName)) {
+        addClass(el, clsName);
+    } else {
+        removeClass(el, clsName);
+    }
+}
+```
 
-    return false;
+## url操作类
+
+```javascript
+/**
+ * 解析url参数
+ * @example id=12345&a=b
+ * @return Object {id:12345,a:b}
+ */
+function parseQuery(query) {
+    const str = decodeURIComponent(query);
+    let result = {},
+        params = [],
+        param = '';
+
+    if (str) params = str.split('&');
+
+    for (let i = 0;i < params.length;i++) {
+        param = params[i].split('=');
+        param[1] ? result[param[0]] = param[1] : '';
+    }
+
+    return result;
+}
+
+function getQuery(name) {
+    const search = location.search.substr(1);
+    const data = parseQuery(search);
+    return data[name] || '';
+}
+
+function getHash(name) {
+    const search = location.hash.substr(1);
+    const data = parseQuery(search);
+    return data[name] || '';
+}
+
+function getHomePage() {
+    const link = location.origin + location.pathname.replace(/\w+\.html/', '');
+    const homePage = link.charAt(link.length - 1) == '/' ? link : link + '/';
+
+    return homePage;
 }
 ```
