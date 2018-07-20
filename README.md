@@ -203,3 +203,34 @@ function isBroswer () {
     return _broswer;
 }
 ```
+
+## 防抖和节流
+
+```javascript
+/**
+ * @function debounce 防抖
+ * @param func, delay
+ */
+export function debounce(func, delay) {
+    let timer;
+    return function() {
+        clearTimeout(timer);
+        timer = setTimeout(() => func.apply(this, arguments), delay);
+    }
+}
+
+/**
+ * @function throttle 节流
+ * @param func, delay
+ */
+export function throttle(func, delay) {
+    let last = 0;
+    return function() {
+        let curr = +new Date();
+        if (curr - last > delay) {
+            func.apply(this, arguments);
+            last = curr;
+        }
+    }
+}
+```
