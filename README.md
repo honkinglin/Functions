@@ -234,3 +234,23 @@ export function throttle(func, delay) {
     }
 }
 ```
+
+## 数组对象去重
+
+```javascript
+/**
+ * 根据指定key排除相同key下的对象
+ * @function unique 节流
+ * @param arr, key
+ */
+
+function unique(arr, key) {
+    const hash = {};
+    const result = arr.reduceRight((item, next) => {
+        hash[next[key]] ? '' : hash[next[key]] = true && item.push(next);
+        return item;
+    }, []);
+    return result;
+}
+
+```
