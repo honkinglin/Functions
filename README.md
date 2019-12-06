@@ -346,3 +346,21 @@ function toCanvas(url) {
    });
 }
 ```
+
+## 过滤 emoji 表情
+
+```javascript
+## 将图片转成base64
+
+```javascript
+function filterEmoji(emojiStr = '', replaceStr = ''){
+    const ranges = [
+        '\ud83c[\udf00-\udfff]', 
+        '\ud83d[\udc00-\ude4f]', 
+        '\ud83d[\ude80-\udeff]'
+    ];
+   
+    return emojiStr.replace(new RegExp(ranges.join('|'), 'g'), replaceStr);
+}
+```
+```
