@@ -350,9 +350,6 @@ function toCanvas(url) {
 ## 过滤 emoji 表情
 
 ```javascript
-## 将图片转成base64
-
-```javascript
 function filterEmoji(emojiStr = '', replaceStr = ''){
     const ranges = [
         '\ud83c[\udf00-\udfff]', 
