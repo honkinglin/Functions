@@ -363,4 +363,3 @@ function filterEmoji(emojiStr = '', replaceStr = ''){
     return emojiStr.replace(new RegExp(ranges.join('|'), 'g'), replaceStr);
 }
 ```
-```
