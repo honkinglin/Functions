@@ -82,43 +82,32 @@ function toggleClass(el, clsName) {
 ```javascript
 /**
  * 解析url参数
- * @example id=12345&a=b
+ * @example https://xxx.com?id=12345&a=b
  * @return Object {id:12345,a:b}
  */
-function parseQuery(query) {
-    const str = decodeURIComponent(query);
-    let result = {},
-        params = [],
-        param = '';
+function parseUrlParams(url) {
+    const paramsStr = /.+\?(.+)/.exec(decodeURIComponent(url))[1];
+    const paramsArr = paramsStr.split('&');
+    const paramsObj = Object.create(null);
 
-    if (str) params = str.split('&');
+    paramsArr.forEach(param => {
+        if (/=/.test(param)) {
+            let [key, val] = param.split('=');
+            val = /^\d+$/.test(val) ? parseFloat(val) : val;
 
-    for (let i = 0;i < params.length;i++) {
-        param = params[i].split('=');
-        param[1] ? result[param[0]] = param[1] : '';
-    }
+            if (paramsObj[key]) {
+                paramsObj[key] = [].concat(paramsObj[key], val);
+            } else {
+                paramsObj[key] = val;
+            }
+        } else {
+            paramsObj[param] = true;
+        }
+    });
 
-    return result;
+    return paramsObj;
 }
 
-function getQuery(name) {
-    const search = location.search.substr(1);
-    const data = parseQuery(search);
-    return data[name] || '';
-}
-
-function getHash(name) {
-    const search = location.hash.substr(1);
-    const data = parseQuery(search);
-    return data[name] || '';
-}
-
-function getHomePage() {
-    const link = location.origin + location.pathname.replace(/\w+\.html$/, '');
-    const homePage = link.charAt(link.length - 1) == '/' ? link : link + '/';
-
-    return homePage;
-}
 ```
 
 ## 判断数据类型
