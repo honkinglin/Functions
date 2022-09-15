@@ -349,3 +349,58 @@ function filterEmoji(emojiStr = '', replaceStr = ''){
     return emojiStr.replace(new RegExp(ranges.join('|'), 'g'), replaceStr);
 }
 ```
+
+## 事件发布订阅函数
+
+```javascript
+class EventEmitter {
+  listeners = {};
+
+  getEvents(eventName: string) {
+    return this.listeners[eventName];
+  }
+
+  on(eventName: string | number, cb: Function) {
+    if (this.listeners[eventName] instanceof Array) {
+      if (this.listeners[eventName].indexOf(cb) === -1) {
+        this.listeners[eventName].push(cb);
+      }
+    } else {
+      this.listeners[eventName] = [].concat(cb);
+    }
+  }
+
+  emit(eventName: string) {
+    const args = Array.prototype.slice.call(arguments);
+    args.shift();
+    this.listeners[eventName].forEach((cb: Function) => {
+      cb.apply(null, args);
+    });
+  }
+
+  remove(eventName: string, eventFunc: Function) {
+    const arr = this.listeners[eventName] || [];
+    const i = arr.indexOf(eventFunc);
+    if (i >= 0) {
+      this.listeners[eventName].splice(i, 1);
+    }
+  }
+
+  removeAll(eventName: string) {
+    this.listeners[eventName] = [];
+  }
+
+  once(eventName: string, eventFunc: Function) {
+    const self = this;
+
+    function fn() {
+      const args = Array.prototype.slice.call(arguments);
+      eventFunc.apply(null, args);
+      self.remove(eventName, fn);
+    }
+
+    this.on(eventName, fn);
+  }
+}
+```
+
